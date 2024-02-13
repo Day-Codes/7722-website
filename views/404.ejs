@@ -17,4 +17,18 @@
         </div>
       </div>
     </div>
+        <!-- Audio element to play audio file -->
+        <audio controls autoplay>
+            <source src="/audio/error.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    
+        <script>
+            // Play the audio when the page is loaded
+            window.onload = function() {
+                const audio = document.querySelector('audio');
+                audio.play();
+            };
+        </script>
+    
 </body>

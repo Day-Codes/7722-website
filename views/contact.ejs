@@ -100,7 +100,8 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ content: JSON.stringify(payload) })
+                    // body: JSON.stringify({ content: JSON.stringify(payload) })
+                    bodt: JSON.stringify(payload)
                 });
                 if (!response.ok) {
                     throw new Error('Failed to send message');

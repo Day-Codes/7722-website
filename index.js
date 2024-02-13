@@ -4,6 +4,8 @@ const path = require('path');
 // Installing Firebase
 const { initializeApp } = require("firebase/app");
 const { getAnalytics } = require("firebase/analytics");
+const { mongoose } = require("mongoose")
+const config = require("./config.json")
 // GFX
 
 // Utility 
@@ -56,27 +58,14 @@ app.get('/contact', (req, res) => {
 
 const apiKey = '5yL00zjwnh2wt9O7MBHZmnBC767QEFKY10LGCJS8EVnbKsAUoUYOKha7dDBALadC'; // Replace with your Blue Alliance API key
 
-app.get('/events', (req, res) => {
-    const { teamNumber } = req.params;
-    fetch(`https://www.thebluealliance.com/api/v3/team/frc7722/events/2024/simple`, {
-        method: 'GET',
-        headers: {
-            'X-TBA-Auth-Key': apiKey
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const events = data.map(event => ({
-            name: event.name,
-            date: event.start_date,
-            location: `${event.city}, ${event.state_prov}, ${event.country}`
-        }));
-        res.json(events);
-    })
-    .catch(error => {
+app.get('/events', async (req, res) => {
+    try {
+        const events = await fetchEvents(); // Fetch events data from TBA
+        res.render('events', { events });
+    } catch (error) {
         console.error('Error fetching data:', error);
-        res.status(500).json({ error: 'Error fetching data' });
-    });
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.get('/force-error', function(req, res, next) {
@@ -102,3 +91,28 @@ const PORT = process.env.PORT || 3400;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+mongoose.connect(config.MongoDBUri)
+
+mongoose.connection
+.on("open", () => console.log("Connected to Mongoose"))
+.on("close", () => console.log("Disconnected from Mongoose"))
+.on("error", (error) => console.log(error))
+
+// hi
+// Function to fetch events data from The Blue Alliance API
+async function fetchEvents() {
+    const teamNumber = '7722'; // Replace with your FRC team number
+    const response = await fetch(`https://www.thebluealliance.com/api/v3/team/frc${teamNumber}/events/2022/simple`, {
+        method: 'GET',
+        headers: {
+            'X-TBA-Auth-Key': apiKey
+        }
+    });
+    const data = await response.json();
+    return data.map(event => ({
+        location: `${event.city}, ${event.state_prov}, ${event.country}`,
+        eventName: event.name,
+        time: event.start_date
+    }));
+}

@@ -19,6 +19,17 @@
             <h3>An error occurred and your request couldn’t be completed. Please try again!</h3>
           </div>
         </div>
+            <!-- Audio element to play audio file -->
+
+            <script>
+                // Play the audio when the page is loaded
+                const errorAudio = "audio/error.mp3";
+                window.onload = function() {
+                    const audio = document.getElementById('errorAudio');
+                    audio.play();
+                };
+            </script>
+
       </section>
 </body>
 </html>
