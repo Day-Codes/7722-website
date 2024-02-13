@@ -1,0 +1,199 @@
+/* public/styles/home.css */
+
+/* Add your CSS styles specific to the home page here */
+body
+{
+    background:
+    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+  background-color: #131313;
+  background-size: 20px 20px;
+  overflow: hidden;
+color: white;
+margin: 0;
+padding: 0;
+font-family: Arial, sans-serif;
+}
+.navbar {
+    background-color: #33333300;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px; 
+}
+
+.logo img {
+    height: 40px;
+}
+
+.links {
+    display: flex;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    background-color: #50454500;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+.header {
+    text-align: center;
+}
+
+.typewriter {
+    overflow: hidden;
+    white-space: nowrap;
+    letter-spacing: .15em;
+}
+
+@media screen and (min-width: 768px) {
+    .typewriter {
+        display: inline-block;
+        border-right: .15em solid orange;
+        animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+    }
+}
+
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange; }
+}
+.footer {
+    background-color: #33333300;
+    color: white;
+    padding: 5px 0;
+    text-align: center;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Add padding for spacing */
+}
+
+.team-logo {
+    order: 0; /* Ensure the logo is on the left */
+}
+
+.location {
+    order: 1; /* Ensure the location is on the left */
+}
+
+.socials {
+    order: 2; /* Ensure the links are on the right */
+}
+
+
+.color-barrier {
+    position: fixed;
+    top: 0;
+    left: 8;
+    width: 100%;
+    height: 5px; /* Adjust height of the bar */
+    animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+  }
+  
+      /* Top edge */
+      .color-barrier.top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px; /* Adjust height of the bar */
+        background: linear-gradient(to right, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+      /* Right edge */
+      .color-barrier.right {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 5px; /* Adjust width of the bar */
+        height: 100%;
+        background: linear-gradient(to bottom, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+      /* Bottom edge */
+      .color-barrier.bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px; /* Adjust height of the bar */
+        background: linear-gradient(to right, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+      /* Left edge */
+      .color-barrier.left {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 5px; /* Adjust width of the bar */
+        height: 100%;
+        background: linear-gradient(to bottom, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+  @keyframes moveGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .color-barrier {
+    background: linear-gradient(to right, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+  }

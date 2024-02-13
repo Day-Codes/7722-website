@@ -1,0 +1,106 @@
+body
+{
+  background:
+    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+    linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+    linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+    linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+    linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+    linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+  background-color: #131313;
+  background-size: 20px 20px;
+  margin: 0;
+  padding: 0;
+  width: 100%; /* Make the image width 100% of its container */
+  height: auto;
+  display: flex;
+}
+/* public/styles/loading.css */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
+#spinner {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.color-barrier {
+    position: fixed;
+    top: 0;
+    left: 8;
+    width: 100%;
+    height: 5px; /* Adjust height of the bar */
+    animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+  }
+  
+      /* Top edge */
+      .color-barrier.top {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px; /* Adjust height of the bar */
+        background: linear-gradient(to right, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+      /* Right edge */
+      .color-barrier.right {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 5px; /* Adjust width of the bar */
+        height: 100%;
+        background: linear-gradient(to bottom, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+      /* Bottom edge */
+      .color-barrier.bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px; /* Adjust height of the bar */
+        background: linear-gradient(to right, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+      /* Left edge */
+      .color-barrier.left {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 5px; /* Adjust width of the bar */
+        height: 100%;
+        background: linear-gradient(to bottom, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+        animation: moveGradient 5s infinite linear; /* Adjust duration and timing as needed */
+      }
+  
+  @keyframes moveGradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .color-barrier {
+    background: linear-gradient(to right, #FF6347, #FF0000, #DC143C, #B22222, #8B0000); /* Adjust shades of red */
+  }

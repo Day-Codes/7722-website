@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles/contact.css">
+</head>
+<body>
+    <div class="color-barrier top"></div>
+    <div class="color-barrier right"></div>
+    <div class="color-barrier bottom"></div>
+    <div class="color-barrier left"></div>
+    
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" alt="Team Logo" width="50" height="50">
+        </div>
+        <div class="links">
+            <a href="/annoucements">Annoucements</a>
+            <a href="/sponser">Sponsers</a>
+            <a href="/home">Home!</a>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Social & Team Info</button>
+            <div class="dropdown-content">
+                <a href="/event">Events</a>
+                <a href="/dnoate">Donate</a>
+                <a href="/ourteam">Our Team</a>
+                <a href="/promovid">Promo Vid</a>
+                <a href="/photos">Photo Album</a>
+                <a href="https://www.instagram.com/frc7722/">Intstagram</a>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <div class="container">
+        <h1>Contact Us</h1>
+        <form id="contactForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+            </div>
+            <div class="form-group">
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject">
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea id="message" name="message"></textarea>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const payload = {
+                username: 'Contact Form', // Specify the username for the webhook message
+                content: 'New message from contact form', // Specify the content of the webhook message
+                embeds: [
+                    {
+                        title: 'New Contact Message',
+                        color: 16711680, // Specify the color of the embed (red)
+                        fields: [
+                            {
+                                name: 'Name',
+                                value: formData.get('name'),
+                                inline: true
+                            },
+                            {
+                                name: 'Email',
+                                value: formData.get('email'),
+                                inline: true
+                            },
+                            {
+                                name: 'Subject',
+                                value: formData.get('subject'),
+                                inline: false
+                            },
+                            {
+                                name: 'Message',
+                                value: formData.get('message'),
+                                inline: false
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            try {
+                const response = await fetch('https://discord.com/api/webhooks/1206741365468430346/gmiIoF7b_StlGHZ514gll_dUAkKK9QToXhKo8oFd3vcO93t1aQff4F9v5EtsyZ5UI9qs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content: JSON.stringify(payload) })
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to send message');
+                }
+                alert('Message sent successfully!');
+                window.location.href = '/home'; 
+                // You can redirect to a thank you page or clear the form here
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to send message');
+            }
+        });
+    </script>
+</body>
+</html>
