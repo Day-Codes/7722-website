@@ -1,0 +1,33 @@
+<!-- data.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data</title>
+</head>
+<body>
+    <h1>CSV Data</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Data</th>
+                <th>Event</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% csvData.forEach(csv => { %>
+                <tr>
+                    <td><%= csv.user %></td>
+                    <p>|</p>
+                    <td><%= JSON.stringify(csv.data) %></td>
+                    <p>|</p>
+                    <td><%= csv.event %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</body>
+</html>

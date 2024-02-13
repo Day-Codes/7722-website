@@ -9,6 +9,9 @@ const { getAnalytics } = require("firebase/analytics");
 const csvtojson = require('csvtojson');
 const { mongoose } = require("mongoose")
 const multer = require('multer');
+const csvWriter = require('csv-writer').createObjectCsvWriter;
+const cron = require('cron').CronJob;
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const config = require("./config.json")
 // GFX
 
@@ -34,7 +37,8 @@ mongoose.connection
 // Schema
 const csvSchema = new mongoose.Schema({
     user: String,
-    data: Object
+    data: Object,
+    event: String,
 });
 const Csv = mongoose.model('Csv', csvSchema);
 
@@ -123,7 +127,8 @@ app.post('/upload', upload.single('csvFile'), async (req, res) => {
     // Save to MongoDB
     const newCsv = new Csv({
         user: username,
-        data: jsonData
+        data: jsonData,
+        event: 'Barrie'
     });
 
     try {
@@ -137,6 +142,100 @@ app.post('/upload', upload.single('csvFile'), async (req, res) => {
         fs.unlinkSync(csvFilePath);
     }
 });
+
+// Routes
+app.get('/data/login', (req, res) => {
+    res.render('data');
+});
+
+app.post('/datalogin', (req, res) => {
+    const { name, login } = req.body;
+    const userData = JSON.parse(fs.readFileSync('./data/login.json', 'utf-8'));
+    const user = userData.find(user => user.name === name && user.login === login);
+    if (user) {
+        res.render('data', { user });
+    } else {
+        res.send('Invalid credentials');
+    }
+});
+
+app.post('/csvlogin', (req, res) => {
+    const { name, login } = req.body;
+    const userData = JSON.parse(fs.readFileSync('./data/login.json', 'utf-8'));
+    const user = userData.find(user => user.name === name && user.login === login);
+    if (user) {
+        res.render('webscout', { user });
+    } else {
+        res.send('Invalid credentials');
+    }
+});
+
+app.post('/csvsubmit', (req, res) => {
+    const { teamName, teamNumber, robotHeight, robotWeight, prosCons, robotAbilities, submitterName } = req.body;
+
+    // Create CSV data
+    const csvData = [
+        {
+            'Team Name': teamName,
+            'Team Number': teamNumber,
+            'Robot Height': robotHeight,
+            'Robot Weight': robotWeight,
+            'Pros and Cons': prosCons,
+            'What can the robot do': robotAbilities,
+            'Name': submitterName
+        }
+    ];
+
+    // Define CSV file path
+    const csvFilePath = `./csv/${Date.now()}-robot-info.csv`;
+
+    // Create CSV writer
+    const csvWriter = createCsvWriter({
+        path: csvFilePath,
+        header: [
+            { id: 'Team Name', title: 'Team Name' },
+            { id: 'Team Number', title: 'Team Number' },
+            { id: 'Robot Height', title: 'Robot Height' },
+            { id: 'Robot Weight', title: 'Robot Weight' },
+            { id: 'Pros and Cons', title: 'Pros and Cons' },
+            { id: 'What can the robot do', title: 'What can the robot do' },
+            { id: 'Name', title: 'Name' }
+        ]
+    });
+
+    // Write CSV data to file
+    csvWriter.writeRecords(csvData)
+        .then(() => {
+            console.log('CSV file written successfully');
+            res.send('Form submitted successfully!');
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).send('Error writing CSV file');
+        });
+});
+
+// Define a cron job to handle CSV files
+new cron('*/1 * * * *', async () => {
+    try {
+        const csvFiles = fs.readdirSync('./csv');
+        for (const csvFile of csvFiles) {
+            if (csvFile.endsWith('.csv')) {
+                const jsonData = await csvtojson().fromFile(`./csv/${csvFile}`);
+                await Csv.create({
+                    filename: csvFile,
+                    data: jsonData,
+                    user: "Web Submittion",
+                    event: 'Barrie'
+                });
+                fs.unlinkSync(`./csv/${csvFile}`);
+                console.log(`CSV file "${csvFile}" uploaded to MongoDB and deleted from /csv directory.`);
+            }
+        }
+    } catch (error) {
+        console.error('Error processing CSV files:', error);
+    }
+}, null, true, 'America/New_York'); // Adjust the time zone as per your requirement
 
 
 // Errors 
@@ -153,7 +252,7 @@ app.use(function(req, res, next) {
 // Start server
 const PORT = process.env.PORT || 3400;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is Active | listening to port ${PORT}`);
 });
 
 
