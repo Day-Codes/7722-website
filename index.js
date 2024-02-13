@@ -77,6 +77,9 @@ app.get('/sponsers', (req, res) => {
 app.get('/contact', (req, res) => {
     res.render('contact');
 });
+app.get('/csv', (req, res) => {
+    res.render('webscout');
+});
 
 
 const apiKey = '5yL00zjwnh2wt9O7MBHZmnBC767QEFKY10LGCJS8EVnbKsAUoUYOKha7dDBALadC'; // Replace with your Blue Alliance API key
@@ -144,8 +147,14 @@ app.post('/upload', upload.single('csvFile'), async (req, res) => {
 });
 
 // Routes
-app.get('/data/login', (req, res) => {
-    res.render('data');
+app.get('/data', async (req, res) => {
+    try {
+        const csvData = await Csv.find({});
+        res.render('data', { csvData });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching CSV data');
+    }
 });
 
 app.post('/datalogin', (req, res) => {
@@ -158,6 +167,7 @@ app.post('/datalogin', (req, res) => {
         res.send('Invalid credentials');
     }
 });
+
 
 app.post('/csvlogin', (req, res) => {
     const { name, login } = req.body;
