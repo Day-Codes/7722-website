@@ -95,7 +95,7 @@ app.get('/force-error', function(req, res, next) {
   });
   
   // Multer configuration for handling file uploads
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'csv/' });
 
 // Routes
 app.get('/scout/login', (req, res) => {
