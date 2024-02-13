@@ -1,5 +1,5 @@
 /* public/styles/home.css */
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,300&family=Staatliches&display=swap');
 /* Add your CSS styles specific to the home page here */
 body
 {
@@ -13,10 +13,13 @@ body
   background-color: #131313;
   background-size: 20px 20px;
   overflow: hidden;
+  font-family: "Staatliches", sans-serif;
+  font-weight: 1;
+  font-style: normal;
 color: white;
 margin: 0;
 padding: 0;
-font-family: Arial, sans-serif;
+
 }
 .navbar {
     background-color: #33333300;

@@ -1,10 +1,14 @@
 // Mandatory to run
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
+const fs = require('fs');
 // Installing Firebase
 const { initializeApp } = require("firebase/app");
 const { getAnalytics } = require("firebase/analytics");
+const csvtojson = require('csvtojson');
 const { mongoose } = require("mongoose")
+const multer = require('multer');
 const config = require("./config.json")
 // GFX
 
@@ -14,11 +18,26 @@ const config = require("./config.json")
 const app = express();
 
 app.set('views', path.join(__dirname, 'views'));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-//Firebase installation
+
+mongoose.connect(config.MongoDBUri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connection
+.on("open", () => console.log("Connected to Mongoose"))
+.on("close", () => console.log("Disconnected from Mongoose"))
+.on("error", (error) => console.log(error))
+
+// Schema
+const csvSchema = new mongoose.Schema({
+    user: String,
+    data: Object
+});
+const Csv = mongoose.model('Csv', csvSchema);
+
 
 // Routes
 app.get('/', (req, res) => {
@@ -75,6 +94,51 @@ app.get('/force-error', function(req, res, next) {
     next(error);
   });
   
+  // Multer configuration for handling file uploads
+const upload = multer({ dest: 'uploads/' });
+
+// Routes
+app.get('/scout/login', (req, res) => {
+    res.render('login');
+});
+
+app.post('/login', (req, res) => {
+    const { name, login } = req.body;
+    const userData = JSON.parse(fs.readFileSync('./data/login.json', 'utf-8'));
+    const user = userData.find(user => user.name === name && user.login === login);
+    if (user) {
+        res.render('upload', { user });
+    } else {
+        res.send('Invalid credentials');
+    }
+});
+
+app.post('/upload', upload.single('csvFile'), async (req, res) => {
+    const { username } = req.body;
+    const csvFilePath = req.file.path;
+
+    // Convert CSV to JSON
+    const jsonData = await csvtojson().fromFile(csvFilePath);
+
+    // Save to MongoDB
+    const newCsv = new Csv({
+        user: username,
+        data: jsonData
+    });
+
+    try {
+        await newCsv.save();
+        res.redirect('/home');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error saving CSV data');
+    } finally {
+        // Remove the uploaded CSV file
+        fs.unlinkSync(csvFilePath);
+    }
+});
+
+
 // Errors 
 // Route for handling 404 errors
 app.use(function(req, res, next) {
@@ -92,12 +156,7 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-mongoose.connect(config.MongoDBUri)
 
-mongoose.connection
-.on("open", () => console.log("Connected to Mongoose"))
-.on("close", () => console.log("Disconnected from Mongoose"))
-.on("error", (error) => console.log(error))
 
 // hi
 // Function to fetch events data from The Blue Alliance API

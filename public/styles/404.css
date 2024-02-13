@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@1,300&family=Staatliches&display=swap');
+
 body {
     background-color: #2F3242;
+    font-family: "Staatliches", sans-serif;
+    font-weight: 400;
+    font-style: normal;
   }
   svg {
     position: absolute;
