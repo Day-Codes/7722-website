@@ -77,9 +77,6 @@ app.get('/ourteam', (req, res) => {
 app.get('/photos', (req, res) => {
     res.render('comingsoon');
 });
-app.get('/annoucements', (req, res) => {
-    res.render('comingsoon');
-});
 app.get('/annoucement', (req, res) => {
     res.render('announcements');
 });
@@ -267,7 +264,7 @@ app.get('/adminlogin', (req, res) => {
 
 // Authentication middleware
 // Get all announcements
-app.get('/lom', async (req, res) => {
+app.get('/announcement', async (req, res) => {
     try {
         const announcements = await Announcement.find();
         res.render('lol', { announcements });
