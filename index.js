@@ -3,19 +3,18 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const fs = require('fs');
-// Installing Firebase
 const { initializeApp } = require("firebase/app");
 const { getAnalytics } = require("firebase/analytics");
 const csvtojson = require('csvtojson');
 const { mongoose } = require("mongoose")
 const multer = require('multer');
+const session = require('express-session');
 const csvWriter = require('csv-writer').createObjectCsvWriter;
 const cron = require('cron').CronJob;
+const Announcement = require('./models/announcement');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 const config = require("./config.json")
-// GFX
 
-// Utility 
 
 // Middleware
 const app = express();
@@ -33,6 +32,15 @@ mongoose.connection
 .on("open", () => console.log("Connected to Mongoose"))
 .on("close", () => console.log("Disconnected from Mongoose"))
 .on("error", (error) => console.log(error))
+app.use(session({
+    secret: 'crappy-patty',
+    resave: false,
+    saveUninitialized: true
+}));
+
+// Load login data from JSON file
+const userss = JSON.parse(fs.readFileSync('./data/login.json', 'utf-8'));
+
 
 // Schema
 const csvSchema = new mongoose.Schema({
@@ -41,6 +49,7 @@ const csvSchema = new mongoose.Schema({
     event: String,
 });
 const Csv = mongoose.model('Csv', csvSchema);
+
 
 
 // Routes
@@ -70,6 +79,9 @@ app.get('/photos', (req, res) => {
 });
 app.get('/annoucements', (req, res) => {
     res.render('comingsoon');
+});
+app.get('/annoucement', (req, res) => {
+    res.render('announcements');
 });
 app.get('/sponsers', (req, res) => {
     res.render('comingsoon');
@@ -109,7 +121,7 @@ app.get('/scout/login', (req, res) => {
     res.render('login');
 });
 
-app.post('/login', (req, res) => {
+app.post('/uploadlogin', (req, res) => {
     const { name, login } = req.body;
     const userData = JSON.parse(fs.readFileSync('./data/login.json', 'utf-8'));
     const user = userData.find(user => user.name === name && user.login === login);
@@ -247,7 +259,46 @@ new cron('*/1 * * * *', async () => {
     }
 }, null, true, 'America/New_York'); // Adjust the time zone as per your requirement
 
+// Load login data from JSON file
+// Login route
+app.get('/adminlogin', (req, res) => {
+    res.render('adminlogin');
+});
 
+// Authentication middleware
+// Get all announcements
+app.get('/lom', async (req, res) => {
+    try {
+        const announcements = await Announcement.find();
+        res.render('announcements', { announcements });
+    } catch (err) {
+        console.error('Error getting announcements:', err);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Show form to create new announcement
+app.get('/post', (req, res) => {
+    res.render('post');
+});
+
+// Create new announcement
+app.post('/post', async (req, res) => {
+    try {
+        const { title, content } = req.body;
+        const newAnnouncement = new Announcement({
+            title,
+            content,
+            date: new Date(),
+            author: "7722" // Default author
+        });
+        await newAnnouncement.save();
+        res.redirect('/announcements');
+    } catch (err) {
+        console.error('Error creating announcement:', err);
+        res.status(500).send('Server Error');
+    }
+});
 // Errors 
 // Route for handling 404 errors
 app.use(function(req, res, next) {
@@ -260,7 +311,7 @@ app.use(function(req, res, next) {
     res.status(500).render('error');
   });
 // Start server
-const PORT = process.env.PORT || 3400;
+const PORT = process.env.PORT || 3900;
 app.listen(PORT, () => {
     console.log(`Server is Active | listening to port ${PORT}`);
 });

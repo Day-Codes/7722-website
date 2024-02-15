@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements</title>
+    <link rel="stylesheet" href="styles/announcement.css">
+</head>
+<body>
+    <h1 class="title">Announcements</h1>
+    <div class="announcements-container">
+        <% announcements.forEach(announcement => { %>
+            <div class="announcement-card" onclick="openAnnouncement('<%= announcement.title %>', '<%= announcement.content %>', '<%= announcement.date %>')">
+                <h3><%= announcement.title %></h3>
+                <p><%= announcement.content %></p>
+            </div>
+        <% }); %>
+    </div>
+
+    <!-- Announcement Modal -->
+    <div id="announcement-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAnnouncementModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-content"></p>
+            <p id="modal-date"></p>
+            <p id="modal-author"></p>
+        </div>
+    </div>
+
+    <script>
+        function openAnnouncement(title, content, date) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-content').innerText = content;
+            document.getElementById('modal-date').innerText = "Date: " + new Date(date).toLocaleDateString();
+            document.getElementById('modal-author').innerText = "Author: 7722"; // Change to actual author
+            document.getElementById('announcement-modal').style.display = 'block';
+        }
+
+        function closeAnnouncementModal() {
+            document.getElementById('announcement-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
