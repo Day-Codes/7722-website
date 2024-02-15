@@ -270,10 +270,10 @@ app.get('/adminlogin', (req, res) => {
 app.get('/lom', async (req, res) => {
     try {
         const announcements = await Announcement.find();
-        res.render('announcements', { announcements });
+        res.render('lol', { announcements });
     } catch (err) {
         console.error('Error getting announcements:', err);
-        res.status(500).send('Server Error');
+        res.status(500)
     }
 });
 
