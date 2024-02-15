@@ -4,45 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Announcements</title>
-    <link rel="stylesheet" href="styles/announcement.css">
+    <link rel="stylesheet" href="/styles/announcement.css">
 </head>
 <body>
+    <div class="color-barrier top"></div>
+    <div class="color-barrier right"></div>
+    <div class="color-barrier bottom"></div>
+    <div class="color-barrier left"></div>
+    
+    <nav class="navbar">
+        <div class="logo">
+            <img src="images/logo.png" alt="Team Logo" width="50" height="50">
+        </div>
+        <div class="links">
+            <a href="/home">Home</a>
+            <a href="/sponser">Sponsers</a>
+            <a href="/contact">Contact us!</a>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Social & Team Info</button>
+            <div class="dropdown-content">
+                <a href="/event">Events</a>
+                <a href="/dnoate">Donate</a>
+                <a href="/ourteam">Our Team</a>
+                <a href="/promovid">Promo Vid</a>
+                <a href="/photos">Photo Album</a>
+                <a href="https://www.instagram.com/frc7722/">Intstagram</a>
+            </div>
+        </div>
+    </nav>
+    <br>
     <h1 class="title">Announcements</h1>
     <div class="announcements-container">
         <% announcements.forEach(announcement => { %>
-            <div class="announcement-card" onclick="openAnnouncementModal('<%= announcement.title %>', '<%= announcement.date %>', '<%= announcement.content %>')" >
-                <img src="images/logo.png" alt="Logo" class="logo">
+            <div class="announcement-card" onclick="openAnnouncementModal('<%= announcement.title %>', '<%= announcement.date %>', '<%= announcement.content %>')">
+                <img src="/images/logo.png" alt="Logo" class="logo">
                 <h3><%= announcement.title %></h3>
-            
+            </div>
         <% }); %>
     </div>
 
-<!-- Announcement Modal -->
-<div id="announcement-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeAnnouncementModal()">&times;</span>
-        <h2 id="modal-title"></h2>
-        <p id="modal-date"></p>
-        <p id="modal-author">Author: 7722</p>
-        <p id="modal-content"></p>
+    <!-- Announcement Modal -->
+    <div id="announcement-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAnnouncementModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-date"></p>
+            <p id="modal-content"></p>
+        </div>
     </div>
-</div>
 
-<script>
-      console.log("JavaScript code executed successfully");
-    function openAnnouncementModal(title, author, date, content) {
-        console.log("Opening announcement modal");
-        document.getElementById('modal-title').innerText = title;
-        document.getElementById('modal-date').innerText = "Date: " + new Date(date).toLocaleDateString();
-        document.getElementById('modal-content');
-        document.getElementById('announcement-modal').style.display = 'block';
-    }
+    <footer class="footer">
 
-    function closeAnnouncementModal() {
-        console.log("Closing announcement modal");
-        document.getElementById('announcement-modal').style.display = 'none';
-    }
-</script>
+        <p class="copyright">&copy; 2024 MechaPhoenix. All rights reserved.</p>
+    </footer>
+    <script>
+        function openAnnouncementModal(title, date, content) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-date').innerText = "Date: " + new Date(date).toLocaleDateString();
+            document.getElementById('modal-content').innerText = content;
+            document.getElementById('announcement-modal').style.display = 'block';
+        }
 
+        function closeAnnouncementModal() {
+            document.getElementById('announcement-modal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
