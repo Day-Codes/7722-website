@@ -77,7 +77,7 @@ app.get('/ourteam', (req, res) => {
 app.get('/photos', (req, res) => {
     res.render('comingsoon');
 });
-app.get('/annoucementooo', (req, res) => {
+app.get('/annoucement', (req, res) => {
     res.render('announcements');
 });
 app.get('/sponsers', (req, res) => {
@@ -290,7 +290,7 @@ app.post('/post', async (req, res) => {
             author: "7722" // Default author
         });
         await newAnnouncement.save();
-        res.redirect('/announcements');
+        res.redirect('/announcement');
     } catch (err) {
         console.error('Error creating announcement:', err);
         res.status(500).send('Server Error');
