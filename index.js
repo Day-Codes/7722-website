@@ -77,7 +77,7 @@ app.get('/ourteam', (req, res) => {
 app.get('/photos', (req, res) => {
     res.render('comingsoon');
 });
-app.get('/annoucement', (req, res) => {
+app.get('/annoucementooo', (req, res) => {
     res.render('announcements');
 });
 app.get('/sponsers', (req, res) => {
