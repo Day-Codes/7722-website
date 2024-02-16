@@ -290,7 +290,7 @@ app.post('/post', async (req, res) => {
             author: "7722" // Default author
         });
         await newAnnouncement.save();
-        res.redirect('/announcements');
+        res.redirect('/announcement');
     } catch (err) {
         console.error('Error creating announcement:', err);
         res.status(500).send('Server Error');
