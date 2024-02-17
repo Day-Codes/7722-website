@@ -264,7 +264,7 @@ app.get('/adminlogin', (req, res) => {
 
 // Authentication middleware
 // Get all announcements
-app.get('/announcement', async (req, res) => {
+app.get('/updates', async (req, res) => {
     try {
         const announcements = await Announcement.find();
         res.render('lol', { announcements });
